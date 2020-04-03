@@ -1,0 +1,7 @@
+C:\Users\Administrador\source\repos\rest\obj\Debug\rest.csprojAssemblyReference.cache
+C:\Users\Administrador\source\repos\rest\obj\Debug\rest.csproj.CoreCompileInputs.cache
+C:\Users\Administrador\source\repos\rest\bin\Debug\rest.exe.config
+C:\Users\Administrador\source\repos\rest\bin\Debug\rest.exe
+C:\Users\Administrador\source\repos\rest\bin\Debug\rest.pdb
+C:\Users\Administrador\source\repos\rest\obj\Debug\rest.exe
+C:\Users\Administrador\source\repos\rest\obj\Debug\rest.pdb
