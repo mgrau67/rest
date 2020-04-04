@@ -11,11 +11,16 @@ namespace rest
 {
     class Program
     {
-        static string m_clientRestDocService = "/LATEST/search"; // MarkLogic REST API service for document search.
-        static string m_clientRestEvalService = "/LATEST/eval"; // MarkLogic REST API service for eval code.
+        const string m_clientRestDocService = "/LATEST/search"; // MarkLogic REST API service for document search.
+        const string m_clientRestEvalService = "/LATEST/eval"; // MarkLogic REST API service for eval code.
         static string m_host = "";
         static string m_port = "";
         static HttpClient m_httpClient;
+        const string cContentType = "Content-Type";
+        const string cTextPlain = "text/plain";
+        const string cApplicationXml = "application/xml";
+        const string cSeparator = "--";
+
 
         static void Main(string[] args)
         {
@@ -41,16 +46,16 @@ namespace rest
             switch (service)
             {
                 case "search":
-                    result = serviceSearch(param);
+                    result = ServiceSearch(param);
                     break;
                 case "eval":
-                    result = serviceEval(param);
+                    result = ServiceEval(param);
                     break;
             }
             Console.WriteLine(result);
         }
 
-        static private string serviceSearch(string _text)
+        static private string ServiceSearch(string _text)
         {
             // build url
             string query = _text;
@@ -76,7 +81,7 @@ namespace rest
             return result;
         }
 
-        static private string serviceEval(string _file)
+        static private string ServiceEval(string _file)
         {
             // build url
             string url = string.Format("http://{0}:{1}{2}",
@@ -92,6 +97,7 @@ namespace rest
             if (response.IsSuccessStatusCode)
             {
                 result = response.Content.ReadAsStringAsync().Result;
+                result = ParseEval(result);
             }
             else
             {
@@ -99,6 +105,54 @@ namespace rest
             }
             return result;
         }
+
+        /// <summary>
+        /// Parse content return by eval service
+        /// </summary>
+        /// <param name="_response"></param>
+        /// <returns></returns>
+        static string ParseEval(string _response)
+        {
+            string result = "";
+            // loop lines
+            using (StringReader reader = new StringReader(_response))
+            {
+                string line, separator = cSeparator;
+                bool addLine = false;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line.IndexOf(separator, 0) >= 0)
+                    {
+                        separator += line.Substring(separator.Length) + cSeparator;
+                        addLine = false;
+                    }
+                    else if (line.IndexOf(cContentType, 0) >= 0)
+                    {
+                        string[] arr = line.Split(':');
+                        string value = (arr.Length > 0) ? arr[1].Trim() : string.Empty;
+                        switch (value)
+                        {
+                            case cTextPlain:
+                                // ignore next line
+                                reader.ReadLine(); // X-Primitive
+                                line = reader.ReadLine();
+                                addLine = true;
+                                break;
+                            case cApplicationXml:
+                                // ignore two next lines
+                                reader.ReadLine(); // X-Primitive
+                                reader.ReadLine(); // X-Path
+                                line = reader.ReadLine();
+                                addLine = true;
+                                break;
+                        }
+                    }
+                    if (addLine) result += line;
+                }
+            }
+            return result;
+        }
+
 
     }
 }
