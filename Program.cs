@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Configuration;
 using System.Net;
 using System.Net.Http;
@@ -113,6 +112,8 @@ namespace rest
         /// <returns></returns>
         static string ParseEval(string _response)
         {
+            if (ConfigurationManager.AppSettings["parse-eval"] == "0") return _response;
+
             string result = "";
             // loop lines
             using (StringReader reader = new StringReader(_response))
@@ -133,15 +134,14 @@ namespace rest
                         switch (value)
                         {
                             case cTextPlain:
-                                // ignore next line
-                                reader.ReadLine(); // X-Primitive
+                                // ignore lines begining X-
+                                while (reader.ReadLine().IndexOf("X-", 0) >= 0) { }
                                 line = reader.ReadLine();
                                 addLine = true;
                                 break;
                             case cApplicationXml:
-                                // ignore two next lines
-                                reader.ReadLine(); // X-Primitive
-                                reader.ReadLine(); // X-Path
+                                // ignore lines begining X-
+                                while (reader.ReadLine().IndexOf("X-", 0) >= 0) { }
                                 line = reader.ReadLine();
                                 addLine = true;
                                 break;
