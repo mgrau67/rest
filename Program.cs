@@ -25,9 +25,9 @@ namespace rest
         {
             m_host = ConfigurationManager.AppSettings["host"];
             m_port = ConfigurationManager.AppSettings["port"];
-            var username = ConfigurationManager.AppSettings["username"];
-            var password = ConfigurationManager.AppSettings["password"];
-            var realm = ConfigurationManager.AppSettings["realm"];
+            string username = ConfigurationManager.AppSettings["username"];
+            string password = ConfigurationManager.AppSettings["password"];
+            string realm = ConfigurationManager.AppSettings["realm"];
 
             // create connection
             CredentialCache m_credCache = new CredentialCache();
@@ -39,6 +39,11 @@ namespace rest
             m_httpClient = new HttpClient(m_clientHandler);
 
             // read parameters
+            if (args.Length < 2)
+            {
+                Console.WriteLine("Params: <search/eval> <text/file-input> <file-output>");
+                return;
+            }
             string service = args[0];
             string param = args[1];
             string result = "";
@@ -49,6 +54,7 @@ namespace rest
                     break;
                 case "eval":
                     result = ServiceEval(param);
+                    if (args.Length >= 2) File.WriteAllText(args[2], result);
                     break;
             }
             Console.WriteLine(result);
