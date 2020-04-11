@@ -54,7 +54,7 @@ namespace rest
                     break;
                 case "eval":
                     result = ServiceEval(param);
-                    if (args.Length >= 2) File.WriteAllText(args[2], result);
+                    if (args.Length >= 3) File.WriteAllText(args[2], result);
                     break;
             }
             Console.WriteLine(result);
