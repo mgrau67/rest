@@ -93,7 +93,9 @@ namespace rest
                                         m_host, m_port, m_clientRestEvalService);
             Uri requestUri = new Uri(url);
             var request = new HttpRequestMessage(new HttpMethod("POST"), requestUri);
-            request.Content = new StringContent(Regex.Replace(File.ReadAllText(_file), "(?:\\r\\n|\\n|\\r)", string.Empty));
+            string content = File.ReadAllText(_file);
+            content = WebUtility.UrlEncode(content);
+            request.Content = new StringContent(Regex.Replace(content, "(?:\\r\\n|\\n|\\r)", string.Empty));
             request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/x-www-form-urlencoded");
 
             // call url
@@ -158,7 +160,6 @@ namespace rest
             }
             return result;
         }
-
 
     }
 }
