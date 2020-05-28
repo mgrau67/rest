@@ -1,7 +1,0 @@
-C:\Users\Administrador\source\repos\rest\obj\Release\rest.csprojAssemblyReference.cache
-C:\Users\Administrador\source\repos\rest\obj\Release\rest.csproj.CoreCompileInputs.cache
-C:\Users\Administrador\source\repos\rest\obj\Release\rest.exe
-C:\Users\Administrador\source\repos\rest\obj\Release\rest.pdb
-C:\Users\Administrador\source\repos\rest\bin\rest.exe.config
-C:\Users\Administrador\source\repos\rest\bin\rest.exe
-C:\Users\Administrador\source\repos\rest\bin\rest.pdb
