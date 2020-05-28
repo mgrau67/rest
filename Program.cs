@@ -94,7 +94,7 @@ namespace rest
             Uri requestUri = new Uri(url);
             var request = new HttpRequestMessage(new HttpMethod("POST"), requestUri);
             string content = File.ReadAllText(_file);
-            content = WebUtility.UrlEncode(content);
+            //content = WebUtility.UrlEncode(content); %d* error!!!
             request.Content = new StringContent(Regex.Replace(content, "(?:\\r\\n|\\n|\\r)", string.Empty));
             request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/x-www-form-urlencoded");
 
