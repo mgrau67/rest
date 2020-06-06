@@ -109,6 +109,7 @@ namespace rest
             else
             {
                 result = string.Format("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
+                Console.WriteLine(response.Content.ReadAsStringAsync().Result);
             }
             return result;
         }
