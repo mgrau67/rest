@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
+using System.Text;
 
 namespace rest
 {
@@ -20,6 +21,11 @@ namespace rest
         const string cApplicationXml = "application/xml";
         const string cSeparator = "--";
 
+        static readonly int TICK_ADJUST = 10000;
+        static readonly int MILLIS = 1000;
+        static readonly int SECONDS = MILLIS;
+        static readonly int MINUTES = 60 * SECONDS;
+        static readonly int HOURS = 60 * MINUTES;
 
         static void Main(string[] args)
         {
@@ -30,6 +36,7 @@ namespace rest
             string realm = ConfigurationManager.AppSettings["realm"];
 
             // create connection
+            long start = DateTime.Now.Ticks;
             CredentialCache m_credCache = new CredentialCache();
             HttpClientHandler m_clientHandler = new HttpClientHandler();
             string mlHost = string.Format("http://{0}:{1}", m_host, m_port);
@@ -37,6 +44,8 @@ namespace rest
             m_clientHandler.Credentials = m_credCache;
             m_clientHandler.PreAuthenticate = true;
             m_httpClient = new HttpClient(m_clientHandler);
+            long elapsed = DateTime.Now.Ticks - start;
+            Console.WriteLine("Connection: %s", FormatTime(elapsed));
 
             // read parameters
             if (args.Length < 2)
@@ -162,5 +171,34 @@ namespace rest
             return result;
         }
 
+        static string FormatTime(long ticks)
+        {
+            StringBuilder sb = new StringBuilder();
+            long millis = ticks / TICK_ADJUST;
+            long n = millis / HOURS;
+
+            if (n != 0)
+            {
+                sb.Append(n).Append("h");
+            }
+
+            n = (millis % HOURS) / MINUTES;
+
+            if ((n) != 0)
+            {
+                sb.Append(n).Append("m");
+            }
+
+            sb.Append((millis % MINUTES) / SECONDS).Append(".");
+
+            n = millis % MILLIS;
+
+            if (n < 100) sb.Append("0");
+            if (n < 10) sb.Append("0");
+
+            sb.Append(n).Append("s");
+
+            return (sb.ToString());
+        }
     }
 }
