@@ -45,7 +45,7 @@ namespace rest
             m_clientHandler.PreAuthenticate = true;
             m_httpClient = new HttpClient(m_clientHandler);
             long elapsed = DateTime.Now.Ticks - start;
-            Console.WriteLine("Connection: %s", FormatTime(elapsed));
+            Console.WriteLine(String.Format("Connection: %s", FormatTime(elapsed)));
 
             // read parameters
             if (args.Length < 2)
@@ -56,6 +56,7 @@ namespace rest
             string service = args[0];
             string param = args[1];
             string result = "";
+            start = DateTime.Now.Ticks;
             switch (service)
             {
                 case "search":
@@ -66,7 +67,9 @@ namespace rest
                     if (args.Length >= 3) File.WriteAllText(args[2], result);
                     break;
             }
+            elapsed = DateTime.Now.Ticks - start;
             Console.WriteLine(result);
+            Console.WriteLine(String.Format("Processed: %s", FormatTime(elapsed)));
         }
 
         static private string ServiceSearch(string _text)
