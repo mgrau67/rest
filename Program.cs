@@ -34,6 +34,8 @@ namespace rest
             string username = ConfigurationManager.AppSettings["username"];
             string password = ConfigurationManager.AppSettings["password"];
             string realm = ConfigurationManager.AppSettings["realm"];
+            string tmp = ConfigurationManager.AppSettings["debug"];
+            bool debug = (tmp == "1") ? true : false;
 
             // create connection
             long start = DateTime.Now.Ticks;
@@ -45,7 +47,7 @@ namespace rest
             m_clientHandler.PreAuthenticate = true;
             m_httpClient = new HttpClient(m_clientHandler);
             long elapsed = DateTime.Now.Ticks - start;
-            Console.WriteLine(String.Format("Connection: %s", FormatTime(elapsed)));
+            if (debug) Console.WriteLine(String.Format("Connection: {0}", FormatTime(elapsed)));
 
             // read parameters
             if (args.Length < 2)
@@ -69,7 +71,7 @@ namespace rest
             }
             elapsed = DateTime.Now.Ticks - start;
             Console.WriteLine(result);
-            Console.WriteLine(String.Format("Processed: %s", FormatTime(elapsed)));
+            if (debug) Console.WriteLine(String.Format("Processed: {0}", FormatTime(elapsed)));
         }
 
         static private string ServiceSearch(string _text)
