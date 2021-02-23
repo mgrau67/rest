@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("rest")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Federico Joly y Cía. S.A.")]
+[assembly: AssemblyCompany("Grupo Joly")]
 [assembly: AssemblyProduct("rest")]
-[assembly: AssemblyCopyright("Copyright © Federico Joly y Cía. S.A. 2020")]
+[assembly: AssemblyCopyright("Copyright © Grupo Joly 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,4 +33,4 @@ using System.Runtime.InteropServices;
 // utilizando el carácter "*", como se muestra a continuación:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.5")]
+[assembly: AssemblyFileVersion("1.0.0.6")]

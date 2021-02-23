@@ -59,15 +59,22 @@ namespace rest
             string param = args[1];
             string result = "";
             start = DateTime.Now.Ticks;
-            switch (service)
+            try
             {
-                case "search":
-                    result = ServiceSearch(param);
-                    break;
-                case "eval":
-                    result = ServiceEval(param);
-                    if (args.Length >= 3) File.WriteAllText(args[2], result);
-                    break;
+                switch (service)
+                {
+                    case "search":
+                        result = ServiceSearch(param);
+                        break;
+                    case "eval":
+                        result = ServiceEval(param);
+                        if (args.Length >= 3) File.WriteAllText(args[2], result);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
             elapsed = DateTime.Now.Ticks - start;
             Console.WriteLine(result);
@@ -108,7 +115,6 @@ namespace rest
             Uri requestUri = new Uri(url);
             var request = new HttpRequestMessage(new HttpMethod("POST"), requestUri);
             string content = File.ReadAllText(_file);
-            //content = WebUtility.UrlEncode(content); %d* error!!!
             request.Content = new StringContent(Regex.Replace(content, "(?:\\r\\n|\\n|\\r)", string.Empty));
             request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/x-www-form-urlencoded");
 

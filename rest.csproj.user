@@ -10,4 +10,7 @@
     <FallbackCulture>es-ES</FallbackCulture>
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartArguments>eval c:\temp\p.xqy</StartArguments>
+  </PropertyGroup>
 </Project>
